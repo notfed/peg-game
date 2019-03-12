@@ -1,5 +1,5 @@
 ------------------------------ MODULE peggame ------------------------------
-EXTENDS TLC, Integers
+EXTENDS TLC, Integers, FiniteSets
 
 VARIABLES state
 
@@ -54,13 +54,16 @@ CanJumpLeft(s,x,y) == /\ <<x,y>> \in s
 \*            - Minus <<x+1,y>>
 \*            - Plus <<x+2,y>>
 JumpUpRight(s,x,y)  == (((s \ {<<x,y>>}) \ {<<x+1,y>>}) \cup {<<x+2,y>>})   
-JumpDownLeft(s,x,y) == (((s \ {<<x,y>>}) \ {<<x-1,y>>}) \cup {<<x+2,y>>})
+JumpDownLeft(s,x,y) == (((s \ {<<x,y>>}) \ {<<x-1,y>>}) \cup {<<x-2,y>>})
 
 JumpUpLeft(s,x,y)    == (((s \ {<<x,y>>}) \ {<<x+1,y-1>>}) \cup {<<x+2,y-2>>})
-JumpDownRight(s,x,y) == (((s \ {<<x,y>>}) \ {<<x-1,y-1>>}) \cup {<<x+2,y+2>>})  
+JumpDownRight(s,x,y) == (((s \ {<<x,y>>}) \ {<<x-1,y+1>>}) \cup {<<x-2,y+2>>})  
 
 JumpRight(s,x,y) == (((s \ {<<x,y>>}) \ {<<x,y+1>>}) \cup {<<x,y+2>>})   
 JumpLeft(s,x,y)  == (((s \ {<<x,y>>}) \ {<<x,y-1>>}) \cup {<<x,y-2>>})
+
+\* Win returns TRUE if there is one peg left
+Win == Cardinality(state) = 1
 
 \* Next
 \*   The next state(s) are those which are the JumpUp(..) of the current state
@@ -73,5 +76,5 @@ Next == \/ (\E <<x,y>> \in Spots : CanJumpUpRight(state,x,y)   /\ state' = JumpU
 
 =============================================================================
 \* Modification History
-\* Last modified Mon Mar 11 23:35:43 EDT 2019 by jay
+\* Last modified Mon Mar 11 23:52:17 EDT 2019 by jay
 \* Created Sun Mar 10 00:12:41 EST 2019 by jay
