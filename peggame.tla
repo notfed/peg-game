@@ -25,56 +25,56 @@ RotateL(s) ==  { <<x,y>> \in Spots :  <<7-x-y, x>> \in s }
 \*            - The tuple <<x,y>>   is in Spots, is in the current state
 \*            - The tuple <<x+1,y>> is in Spots, is in the current state
 \*            - The tuple <<x+2,y>> is in Spots, is not in the current state
-CanJumpUpRight(s,x,y) == /\ <<x,y>> \in s
-                         /\ <<x+1,y>> \in s
-                         /\ <<x+2,y>> \in (Spots \ s)
+CanJumpUpRight(x,y) == /\ <<x,y>> \in state
+                         /\ <<x+1,y>> \in state
+                         /\ <<x+2,y>> \in (Spots \ state)
                     
-CanJumpDownLeft(s,x,y) == /\ <<x,y>> \in s
-                          /\ <<x-1,y>> \in s
-                          /\ <<x-2,y>> \in (Spots \ s)
+CanJumpDownLeft(x,y) == /\ <<x,y>> \in state
+                          /\ <<x-1,y>> \in state
+                          /\ <<x-2,y>> \in (Spots \ state)
 
-CanJumpUpLeft(s,x,y) == /\ <<x,y>> \in s
-                        /\ <<x+1,y-1>> \in s
-                        /\ <<x+2,y-2>> \in (Spots \ s)
+CanJumpUpLeft(x,y) == /\ <<x,y>> \in state
+                        /\ <<x+1,y-1>> \in state
+                        /\ <<x+2,y-2>> \in (Spots \ state)
                     
-CanJumpDownRight(s,x,y) == /\ <<x,y>> \in s
-                           /\ <<x-1,y+1>> \in s
-                           /\ <<x-2,y+2>> \in (Spots \ s)
+CanJumpDownRight(x,y) == /\ <<x,y>> \in state
+                           /\ <<x-1,y+1>> \in state
+                           /\ <<x-2,y+2>> \in (Spots \ state)
 
-CanJumpRight(s,x,y) == /\ <<x,y>> \in s
-                       /\ <<x,y+1>> \in s
-                       /\ <<x,y+2>> \in (Spots \ s)
+CanJumpRight(x,y) == /\ <<x,y>> \in state
+                       /\ <<x,y+1>> \in state
+                       /\ <<x,y+2>> \in (Spots \ state)
                        
-CanJumpLeft(s,x,y) == /\ <<x,y>> \in s
-                       /\ <<x,y-1>> \in s
-                       /\ <<x,y-2>> \in (Spots \ s)
-\* JumpUp(s,x,y)
-\*   The given state, except...
+CanJumpLeft(x,y) == /\ <<x,y>> \in state
+                       /\ <<x,y-1>> \in state
+                       /\ <<x,y-2>> \in (Spots \ state)
+\* JumpUp(x,y)
+\*   The current state, except...
 \*            - Minus <<x,y>> 
 \*            - Minus <<x+1,y>>
 \*            - Plus <<x+2,y>>
-JumpUpRight(s,x,y)  == (((s \ {<<x,y>>}) \ {<<x+1,y>>}) \cup {<<x+2,y>>})   
-JumpDownLeft(s,x,y) == (((s \ {<<x,y>>}) \ {<<x-1,y>>}) \cup {<<x-2,y>>})
+JumpUpRight(x,y)  == (((state \ {<<x,y>>}) \ {<<x+1,y>>}) \cup {<<x+2,y>>})   
+JumpDownLeft(x,y) == (((state \ {<<x,y>>}) \ {<<x-1,y>>}) \cup {<<x-2,y>>})
 
-JumpUpLeft(s,x,y)    == (((s \ {<<x,y>>}) \ {<<x+1,y-1>>}) \cup {<<x+2,y-2>>})
-JumpDownRight(s,x,y) == (((s \ {<<x,y>>}) \ {<<x-1,y+1>>}) \cup {<<x-2,y+2>>})  
+JumpUpLeft(x,y)    == (((state \ {<<x,y>>}) \ {<<x+1,y-1>>}) \cup {<<x+2,y-2>>})
+JumpDownRight(x,y) == (((state \ {<<x,y>>}) \ {<<x-1,y+1>>}) \cup {<<x-2,y+2>>})  
 
-JumpRight(s,x,y) == (((s \ {<<x,y>>}) \ {<<x,y+1>>}) \cup {<<x,y+2>>})   
-JumpLeft(s,x,y)  == (((s \ {<<x,y>>}) \ {<<x,y-1>>}) \cup {<<x,y-2>>})
+JumpRight(x,y) == (((state \ {<<x,y>>}) \ {<<x,y+1>>}) \cup {<<x,y+2>>})   
+JumpLeft(x,y)  == (((state \ {<<x,y>>}) \ {<<x,y-1>>}) \cup {<<x,y-2>>})
 
 \* Win returns TRUE if there is one peg left
 Win == Cardinality(state) = 1
 
 \* Next
 \*   The next state(s) are those which are the JumpUp(..) of the current state
-Next == \/ (\E <<x,y>> \in Spots : CanJumpUpRight(state,x,y)   /\ state' = JumpUpRight(state,x,y))
-        \/ (\E <<x,y>> \in Spots : CanJumpDownLeft(state,x,y)  /\ state' = JumpDownLeft(state,x,y))
-        \/ (\E <<x,y>> \in Spots : CanJumpUpLeft(state,x,y)    /\ state' = JumpUpLeft(state,x,y))
-        \/ (\E <<x,y>> \in Spots : CanJumpDownRight(state,x,y) /\ state' = JumpDownRight(state,x,y))
-        \/ (\E <<x,y>> \in Spots : CanJumpRight(state,x,y)     /\ state' = JumpRight(state,x,y))
-        \/ (\E <<x,y>> \in Spots : CanJumpLeft(state,x,y)      /\ state' = JumpLeft(state,x,y))
+Next == \/ (\E <<x,y>> \in Spots : CanJumpUpRight(x,y)   /\ state' = JumpUpRight(x,y))
+        \/ (\E <<x,y>> \in Spots : CanJumpDownLeft(x,y)  /\ state' = JumpDownLeft(x,y))
+        \/ (\E <<x,y>> \in Spots : CanJumpUpLeft(x,y)    /\ state' = JumpUpLeft(x,y))
+        \/ (\E <<x,y>> \in Spots : CanJumpDownRight(x,y) /\ state' = JumpDownRight(x,y))
+        \/ (\E <<x,y>> \in Spots : CanJumpRight(x,y)     /\ state' = JumpRight(x,y))
+        \/ (\E <<x,y>> \in Spots : CanJumpLeft(x,y)      /\ state' = JumpLeft(x,y))
 
 =============================================================================
 \* Modification History
-\* Last modified Mon Mar 11 23:52:17 EDT 2019 by jay
+\* Last modified Mon Mar 11 23:56:26 EDT 2019 by jay
 \* Created Sun Mar 10 00:12:41 EST 2019 by jay
