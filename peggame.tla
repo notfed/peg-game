@@ -9,7 +9,7 @@ Spots == { <<x,y>> \in {1,2,3,4,5}\X{1,2,3,4,5} : x+y<=6 }
 
 
 \* Init
-\*   state = The set of Spots except (3,1)
+\*   state = The set of Spots except (5,1)
 Init == /\ state = Spots \ { <<4,1>> }
 
 \* RotateR(s) - Rotates the board to the right by 360/3 degrees.
@@ -76,5 +76,5 @@ Next == \/ (\E <<x,y>> \in Spots : CanJumpUpRight(x,y)   /\ state' = JumpUpRight
 
 =============================================================================
 \* Modification History
-\* Last modified Mon Mar 11 23:56:26 EDT 2019 by jay
+\* Last modified Tue Mar 12 00:02:48 EDT 2019 by jay
 \* Created Sun Mar 10 00:12:41 EST 2019 by jay
