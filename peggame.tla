@@ -64,9 +64,14 @@ JumpLeft(s,x,y)  == (((s \ {<<x,y>>}) \ {<<x,y-1>>}) \cup {<<x,y-2>>})
 
 \* Next
 \*   The next state(s) are those which are the JumpUp(..) of the current state
-Next == \/ (\E <<x,y>> \in Spots : CanJumpUpRight(state,x,y) /\ state' = JumpUpRight(state,x,y))
+Next == \/ (\E <<x,y>> \in Spots : CanJumpUpRight(state,x,y)   /\ state' = JumpUpRight(state,x,y))
+        \/ (\E <<x,y>> \in Spots : CanJumpDownLeft(state,x,y)  /\ state' = JumpDownLeft(state,x,y))
+        \/ (\E <<x,y>> \in Spots : CanJumpUpLeft(state,x,y)    /\ state' = JumpUpLeft(state,x,y))
+        \/ (\E <<x,y>> \in Spots : CanJumpDownRight(state,x,y) /\ state' = JumpDownRight(state,x,y))
+        \/ (\E <<x,y>> \in Spots : CanJumpRight(state,x,y)     /\ state' = JumpRight(state,x,y))
+        \/ (\E <<x,y>> \in Spots : CanJumpLeft(state,x,y)      /\ state' = JumpLeft(state,x,y))
 
 =============================================================================
 \* Modification History
-\* Last modified Mon Mar 11 23:30:06 EDT 2019 by jay
+\* Last modified Mon Mar 11 23:35:43 EDT 2019 by jay
 \* Created Sun Mar 10 00:12:41 EST 2019 by jay
