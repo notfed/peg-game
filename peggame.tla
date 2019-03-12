@@ -9,18 +9,10 @@ Spots == { <<x,y>> \in {1,2,3,4,5}\X{1,2,3,4,5} : x+y<=6 }
 
 
 \* Init
-\*   state = The set of Spots except (5,1)
+\*   state = The set of Spots except (4,1)
 Init == /\ state = Spots \ { <<4,1>> } /\ xx=-1 /\ yy=-1 /\ dd=""
 
-\* RotateR(s) - Rotates the board to the right by 360/3 degrees.
-\* RotateRSpot(spot) == <<spot[2], 7-spot[1]-spot[2]>>
-RotateR(s) ==  { <<x,y>> \in Spots :  <<y, 7-x-y>> \in s }  
-
-\* RotateR(s) - Rotates the board to the left by 360/3 degrees.
-\* RotateLSpot(spot) == <<7-spot[1]-spot[2], spot[1]>>
-RotateL(s) ==  { <<x,y>> \in Spots :  <<7-x-y, x>> \in s }
-
-\* CanJumpUp(x,y)
+\* CanJumpUpRight(x,y)
 \*         A function f(x,y) returning true if:
 \*            - The tuple <<x,y>>   is in Spots, is in the current state
 \*            - The tuple <<x+1,y>> is in Spots, is in the current state
@@ -48,7 +40,7 @@ CanJumpRight(x,y) == /\ <<x,y>> \in state
 CanJumpLeft(x,y) == /\ <<x,y>> \in state
                        /\ <<x,y-1>> \in state
                        /\ <<x,y-2>> \in (Spots \ state)
-\* JumpUp(x,y)
+\* JumpUpRight(x,y)
 \*   The current state, except...
 \*            - Minus <<x,y>> 
 \*            - Minus <<x+1,y>>
@@ -67,14 +59,15 @@ Win == Cardinality(state) = 1
 
 \* Next
 \*   The next state(s) are those which are the JumpUp(..) of the current state
-Next == \/ (\E <<x,y>> \in Spots : CanJumpUpRight(x,y)   /\ state' = JumpUpRight(x,y) /\ xx'=x /\ yy'=y /\ dd'="UpRight")
-        \/ (\E <<x,y>> \in Spots : CanJumpDownLeft(x,y)  /\ state' = JumpDownLeft(x,y) /\ xx'=x /\ yy'=y /\ dd'="DownLeft")
-        \/ (\E <<x,y>> \in Spots : CanJumpUpLeft(x,y)    /\ state' = JumpUpLeft(x,y) /\ xx'=x /\ yy'=y /\ dd'="UpLeft")
-        \/ (\E <<x,y>> \in Spots : CanJumpDownRight(x,y) /\ state' = JumpDownRight(x,y) /\ xx'=x /\ yy'=y /\ dd'="DownRight")
-        \/ (\E <<x,y>> \in Spots : CanJumpRight(x,y)     /\ state' = JumpRight(x,y) /\ xx'=x /\ yy'=y /\ dd'="Right")
-        \/ (\E <<x,y>> \in Spots : CanJumpLeft(x,y)      /\ state' = JumpLeft(x,y) /\ xx'=x /\ yy'=y /\ dd'="Left")
+Next == \/ (\E <<x,y>> \in Spots : /\ xx'=x /\ yy'=y
+                                   /\  \/ CanJumpUpRight(x,y)   /\ state' = JumpUpRight(x,y)   /\ dd'="UpRight"
+                                       \/ CanJumpDownLeft(x,y)  /\ state' = JumpDownLeft(x,y)  /\ dd'="DownLeft"
+                                       \/ CanJumpUpLeft(x,y)    /\ state' = JumpUpLeft(x,y)    /\ dd'="UpLeft"
+                                       \/ CanJumpDownRight(x,y) /\ state' = JumpDownRight(x,y) /\ dd'="DownRight"
+                                       \/ CanJumpRight(x,y)     /\ state' = JumpRight(x,y)     /\ dd'="Right"
+                                       \/ CanJumpLeft(x,y)      /\ state' = JumpLeft(x,y)      /\ dd'="Left")
 
 =============================================================================
 \* Modification History
-\* Last modified Tue Mar 12 00:14:25 EDT 2019 by jay
+\* Last modified Tue Mar 12 00:30:31 EDT 2019 by jay
 \* Created Sun Mar 10 00:12:41 EST 2019 by jay
