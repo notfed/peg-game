@@ -17,9 +17,9 @@ In order to use this model to solve a peg game, you will need to be familiar wit
 
 The way you solve a game is as follows:
 - Set the initial state of the game by defining the "Init" state as desired
-- Run the TLA+ model checker, adding a constraint that there is no winning state (Win == FALSE).
-- When you run the model checker, it should fail, providing a solution, and explaining how the solution violated the constraint that there is no winning state.
+- Run the TLA+ model checker, adding an *invariant* that there is no winning state: `Win = FALSE`.
+- When you run the model checker, it should "fail" (this is a good thing), providing all steps which led to the winning state.
 
-(TODO: Put exact instructions here, with screenshots/output.)
+![Example Results](/run.png)
 
 ## 
